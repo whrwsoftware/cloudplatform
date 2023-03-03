@@ -96,14 +96,18 @@ type (
 func startRefreshToken() {
 	ticker := time.NewTicker(time.Hour)
 	defer ticker.Stop()
-	select {
-	case <-ticker.C:
-		refreshToken()
+	for {
+		select {
+		case <-ticker.C:
+			refreshToken()
+		}
 	}
 }
 
 func refreshToken() {
-	mu.Lock()
+	if !mu.TryLock() {
+		return
+	}
 	defer mu.Unlock()
 	for _, v := range cacheCtx {
 		v.refreshToken()
