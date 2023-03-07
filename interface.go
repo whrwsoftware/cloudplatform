@@ -36,11 +36,11 @@ var (
 	logger         = log.New(os.Stdout, "[cloudplatform] ", log.LstdFlags)
 )
 
-func AddCtx(ps ...*Context) {
-	for _, p := range ps {
-		p.refreshToken()
-		cacheCtx[p.BaseUrl] = p
-		cacheCtxID[p.ID] = p
+func AddCtx(ctx ...*Context) {
+	for _, c := range ctx {
+		c.refreshToken()
+		cacheCtx[c.BaseUrl] = c
+		cacheCtxID[c.ID] = c
 	}
 }
 
